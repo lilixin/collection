@@ -126,3 +126,4 @@ Git的版本库里存了很多东西，其中最重要的就是称为stage（或
 	$ git branch -d dev
 ########查看分支
 	$ git branch  
+  
