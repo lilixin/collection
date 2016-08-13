@@ -129,4 +129,5 @@ Git的版本库里存了很多东西，其中最重要的就是称为stage（或
 	$ git branch  
 
 ###解决冲突
-`git merge newbranch` 提是冲突
+`git merge newbranch` 提示冲突
+
