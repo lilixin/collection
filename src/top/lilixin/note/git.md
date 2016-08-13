@@ -66,5 +66,50 @@ Git的版本库里存了很多东西，其中最重要的就是称为stage（或
 2. 第二步是用git commit提交更改，实际上就是把暂存区的所有内容提交到当前分支。
 　　　　　　　
 
-你可以简单理解为，需要提交的文件修改通通放到暂存区，然后，一次性提交暂存区的所有修改。
+你可以简单理解为，需要提交的文件修改通通放到暂存区，然后，一次性提交暂存区的所有修改。  
+如果不提交到暂存区，既修改了本地文件，然后commit 也不会把本地文件的变化提交上去， git跟踪的是修改，不是文件
 
+###撤销修改
+`$ git checkout -- file`  
+
+撤销本地修改，使文件回到最近一次add 或者commit的状态  ，注意命令中的--如果没有--就意味是切换到另一个分支
+
+#######这里有两种情况：  
+	1. 一种是readme.txt自修改后还没有被放到暂存区，现在，撤销修改就回到和版本库一模一样的状态；  
+	2. 一种是readme.txt已经添加到暂存区后，又作了修改，现在，撤销修改就回到添加到暂存区后的状态。  
+	
+###########如果错误的修改已经添加到暂存区了呢（add了）
+	$ git reset HEAD readme.txt
+既可以回退版本，也可以把暂存区的修改回退到工作区。当我们用HEAD时，表示最新的版本
+分两部：第一步：git reset HEAD readme.txt 把暂存区的版本回退到最新，第二步：git checkout -- readme.txt撤销本地修改
+
+
+
+###删除文件
+    $ git rm readme.txt
+    $ git commit -m "delete readme.txt"
+如果手动删除了本地文件，还需要运行上面两行命令，如果是误删除，那么可以用`git checkout -- readme.txt`   
+
+`git checkout`其实是用版本库里的版本替换工作区的版本，无论工作区是修改还是删除，都可以“一键还原”。
+
+###远程仓库
+#########创建github ssh-key  
+打开git-bash  
+
+     `$ ssh-keygen -t rsa -C "youremail@example.com" ` 
+ 
+一路回车,如果一切顺利的话，可以在用户主目录里找到**.ssh目录**，里面有**id_rsa和id_rsa.pub**两个文件，这两个就是SSH Key的秘钥对，id_rsa是私钥，不能泄露出去，id_rsa.pub是公钥，可以放心地告诉任何人。    
+然后登陆GitHub，打开“Account settings”，“SSH Keys”页面：点“Add SSH Key”，填上任意Title，在Key文本框里粘贴id_rsa.pub
+
+1. 创建一个github 仓库 （注意要拿ssh连接的地址）
+	git@github.com:lilixin/learngit.git
+2. 关联本地仓库到github远程仓库
+    $ git remote add origin git@github.com:lilixin/learngit.git  
+远程库的名字就是origin，这是Git默认的叫法，也可以改成别的，但是origin这个名字一看就知道是远程库。
+3. 把本地库的所有内容推送到远程库上  
+	$ git push -u origin master   
+第一次加-u参数，以后使用下面推送修改
+	`$ git push  origin master` 
+
+###从远程库克隆
+	$ git clone git@github.com:lilixin/hello.git
