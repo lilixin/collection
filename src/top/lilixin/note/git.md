@@ -113,3 +113,10 @@ Git的版本库里存了很多东西，其中最重要的就是称为stage（或
 
 ###从远程库克隆
 	$ git clone git@github.com:lilixin/hello.git
+
+###分支管理
+###########创建并切换一个分支
+	$ git checkout -b dev
+##########相当于两条命令
+	$ git branch dev
+	$ git checkout dev
