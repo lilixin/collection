@@ -120,3 +120,9 @@ Git的版本库里存了很多东西，其中最重要的就是称为stage（或
 ##########相当于两条命令
 	$ git branch dev
 	$ git checkout dev
+#############合并分支(合并指定分支到当前分支)
+	$ git merge dev
+#############删除分支
+	$ git branch -d dev
+########查看分支
+	$ git branch
