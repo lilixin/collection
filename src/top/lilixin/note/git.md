@@ -168,3 +168,63 @@ Git的版本库里存了很多东西，其中最重要的就是称为stage（或
 建立本地分支和远程分支的关联，使用`git branch --set-upstream branch-name origin/branch-name`；
 
 从远程抓取分支，使用`git pull`，如果有冲突，要先处理冲突。
+
+###标签管理
+############创建标签
+	$ git tag v1.0  //首先切换到需要打标签的分支
+默认是打到最新的提交上，也就是HEAD
+
+	$ git tag v0.9 6224937 //也可以按commit id 打标签  
+	//可以给标签打上说明 -a指定标签名 -m 说明信息  
+	$ git tag -a v0.1 -m "version 0.1 released" 3628164  
+###########查看标签
+	$ git tag 
+	$ git show <tagname> //显示详细信息
+###标签管理
+	git push origin <tagname>可以推送一个本地标签；
+
+	git push origin --tags可以推送全部未推送过的本地标签；
+
+	git tag -d <tagname>可以删除一个本地标签；
+
+	git push origin :refs/tags/<tagname>可以删除一个远程标签。
+
+###忽略文件
+忽略某些文件时，需要编写.gitignore	  
+.gitignore文件本身要放到版本库里，并且可以对.gitignore做版本管理！ 如：  
+		
+    # Windows:
+    Thumbs.db
+    ehthumbs.db
+    Desktop.ini
+    
+    # Python:
+    *.py[cod]
+    *.so
+    *.egg
+    *.egg-info
+    dist
+    build
+    
+    # My configurations:
+    db.ini
+    deploy_key_rsa
+
+###########强制添加
+	$ git add -f App.class//某个文件被.gitignore忽略，强制加
+##########检查.gitignore哪里出了错
+	$ git check-ignore
+
+###配置别名
+	$ git config --global alias.co checkout
+	$ git config --global alias.ci commit
+	$ git config --global alias.br branch
+	$ git config --global alias.last 'log -1'//显示最近一次
+ 
+	$ git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+
+--global是对当前用户起作用，上面这样配置只会对当前仓库起作用   
+每个git仓库的配置文件都在`.git/config`下面
+
+###搭建Git服务器
+[搭建Git服务器文章地址](http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/00137583770360579bc4b458f044ce7afed3df579123eca000)
