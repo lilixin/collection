@@ -131,3 +131,11 @@ Git的版本库里存了很多东西，其中最重要的就是称为stage（或
 ###解决冲突
 `git merge newbranch` 提示冲突
  修改文件重新push 然后 merge
+########查看合并冲突日志 --graph
+	$ git log --graph --pretty=oneline --abbrev-commit
+###分支策略
+实际开发中master分支不会轻易在上面干活，每个人都有自己的分支，大家都往dev分支合并，等需要上线时，合并dev分支到master分支  
+#######默认情况下Git会用Fast forward模式，但这种模式下，删除分支后，会丢掉分支信息。
+所以合并分支时禁用Fast forward模式，Git就会在merge时生成一个新的commit，这样，从分支历史上就可以看出分支信息  
+
+	$ git merge --no-ff -m "merge with no-ff" dev
