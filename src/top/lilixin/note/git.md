@@ -154,4 +154,4 @@ Git的版本库里存了很多东西，其中最重要的就是称为stage（或
 	$ git stash apply //只是恢复
 	$ git stash drop  //把保存的内容从stash list 中删除
 ###强制删除未合并的分支
-	$ git branch -D newbranch 
+	$ git branch -D newbranch  
