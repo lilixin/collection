@@ -139,3 +139,17 @@ Git的版本库里存了很多东西，其中最重要的就是称为stage（或
 所以合并分支时禁用Fast forward模式，Git就会在merge时生成一个新的commit，这样，从分支历史上就可以看出分支信息  
 
 	$ git merge --no-ff -m "merge with no-ff" dev
+
+###bug分支
+当你接到一个修复一个代号101的bug的任务时，很自然地，你想创建一个分支issue-101来修复它，但是，等等，当前正在dev上进行的工作还没有提交，并且当前工作还没完成，不能提交，而bug又需要修复
+	$ git stash  //使用此命令把当前工作状态保存
+########此命令会把当前状态保存
+然后就可以在master分支上创建一个bug分支去修复bug，合并分支
+然后就可以切回到之前的dev分支
+	$ git stash list  
+查看之前保存的内容
+########如何恢复
+	$ git stash pop  //会把内容恢复并从stash list 中删除
+
+	$ git stash apply //只是恢复
+	$ git stash drop  //把保存的内容从stash list 中删除
