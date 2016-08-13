@@ -115,10 +115,11 @@ Git的版本库里存了很多东西，其中最重要的就是称为stage（或
 	$ git clone git@github.com:lilixin/hello.git
 
 ###分支管理
-###########创建并切换一个分支
+###########创建并切换一个分支(相当于两条命令)
 	$ git checkout -b dev
-##########相当于两条命令
+##########创建分支
 	$ git branch dev
+##########切换分支
 	$ git checkout dev
 #############合并分支(合并指定分支到当前分支)
 	$ git merge dev
@@ -126,4 +127,6 @@ Git的版本库里存了很多东西，其中最重要的就是称为stage（或
 	$ git branch -d dev
 ########查看分支
 	$ git branch  
-  
+
+###解决冲突
+`git merge newbranch` 提示冲突
