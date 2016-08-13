@@ -41,27 +41,27 @@ window下载安装 <https://git-for-windows.github.io>速度慢
 
 在git中用HEAD表示当前版本，上一个版本就是HEAD^，上上一个版本就是HEAD^^，往上100个版本HEAD~100
 
-######回退到上一个版本
+#######回退到上一个版本
 
 	 `git reset --hard HEAD^`
 
-######如果再回退回来(后面是版本号，可以只写前面一段，git可以找到)
+#######如果再回退回来(后面是版本号，可以只写前面一段，git可以找到)
 
 	 `git reset --hard 23jrrj32jr0fjds`
-######提交的命令历史    (带有版本号)  
+#######提交的命令历史    (带有版本号)  
 
 	 `git reflog`
 
 HEAD指向的版本就是当前版本，因此，Git允许我们在版本的历史之间穿梭，使用命令git reset --hard commit_id 
 
 ###工作区和暂存区
-######工作区（Working Directory）
+#######工作区（Working Directory）
 就是你在电脑里能看到的目录
-######版本库（Repository）
+#######版本库（Repository）
 工作区有一个隐藏目录.git，这个不算工作区，而是Git的版本库。
 
 Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。
-######添加文件分两步：
+#######添加文件分两步：
 1. 第一步是用git add把文件添加进去，实际上就是把文件修改添加到暂存区；
 2. 第二步是用git commit提交更改，实际上就是把暂存区的所有内容提交到当前分支。
 　　　　　　　
@@ -78,7 +78,7 @@ Git的版本库里存了很多东西，其中最重要的就是称为stage（或
 	1. 一种是readme.txt自修改后还没有被放到暂存区，现在，撤销修改就回到和版本库一模一样的状态；  
 	2. 一种是readme.txt已经添加到暂存区后，又作了修改，现在，撤销修改就回到添加到暂存区后的状态。  
 	
-###########如果错误的修改已经添加到暂存区了呢（add了）
+#######如果错误的修改已经添加到暂存区了呢（add了）
 	$ git reset HEAD readme.txt
 既可以回退版本，也可以把暂存区的修改回退到工作区。当我们用HEAD时，表示最新的版本
 分两部：第一步：git reset HEAD readme.txt 把暂存区的版本回退到最新，第二步：git checkout -- readme.txt撤销本地修改
@@ -93,7 +93,7 @@ Git的版本库里存了很多东西，其中最重要的就是称为stage（或
 `git checkout`其实是用版本库里的版本替换工作区的版本，无论工作区是修改还是删除，都可以“一键还原”。
 
 ###远程仓库
-#########创建github ssh-key  
+#######创建github ssh-key  
 打开git-bash  
 
      `$ ssh-keygen -t rsa -C "youremail@example.com" ` 
@@ -115,23 +115,23 @@ Git的版本库里存了很多东西，其中最重要的就是称为stage（或
 	$ git clone git@github.com:lilixin/hello.git
 
 ###分支管理
-###########创建并切换一个分支(相当于两条命令)
+#######创建并切换一个分支(相当于两条命令)
 	$ git checkout -b dev
-##########创建分支
+#######创建分支
 	$ git branch dev
-##########切换分支
+#######切换分支
 	$ git checkout dev
-#############合并分支(合并指定分支到当前分支)
+#######合并分支(合并指定分支到当前分支)
 	$ git merge dev
-#############删除分支
+#######删除分支
 	$ git branch -d dev
-########查看分支
+#######查看分支
 	$ git branch  
 
 ###解决冲突
 `git merge newbranch` 提示冲突
  修改文件重新push 然后 merge
-########查看合并冲突日志 --graph
+#######查看合并冲突日志 --graph
 	$ git log --graph --pretty=oneline --abbrev-commit
 ###分支策略
 实际开发中master分支不会轻易在上面干活，每个人都有自己的分支，大家都往dev分支合并，等需要上线时，合并dev分支到master分支  
@@ -143,12 +143,12 @@ Git的版本库里存了很多东西，其中最重要的就是称为stage（或
 ###bug分支
 当你接到一个修复一个代号101的bug的任务时，很自然地，你想创建一个分支issue-101来修复它，但是，等等，当前正在dev上进行的工作还没有提交，并且当前工作还没完成，不能提交，而bug又需要修复
 	$ git stash  //使用此命令把当前工作状态保存
-########此命令会把当前状态保存
+#######此命令会把当前状态保存
 然后就可以在master分支上创建一个bug分支去修复bug，合并分支
 然后就可以切回到之前的dev分支
 	$ git stash list  
 查看之前保存的内容
-########如何恢复
+#######如何恢复
 	$ git stash pop  //会把内容恢复并从stash list 中删除
 
 	$ git stash apply //只是恢复
@@ -170,14 +170,14 @@ Git的版本库里存了很多东西，其中最重要的就是称为stage（或
 从远程抓取分支，使用`git pull`，如果有冲突，要先处理冲突。
 
 ###标签管理
-############创建标签
+#######创建标签
 	$ git tag v1.0  //首先切换到需要打标签的分支
 默认是打到最新的提交上，也就是HEAD
 
 	$ git tag v0.9 6224937 //也可以按commit id 打标签  
 	//可以给标签打上说明 -a指定标签名 -m 说明信息  
 	$ git tag -a v0.1 -m "version 0.1 released" 3628164  
-###########查看标签
+#######查看标签
 	$ git tag 
 	$ git show <tagname> //显示详细信息
 ###标签管理
@@ -210,9 +210,9 @@ Git的版本库里存了很多东西，其中最重要的就是称为stage（或
     db.ini
     deploy_key_rsa
 
-###########强制添加
+#######强制添加
 	$ git add -f App.class//某个文件被.gitignore忽略，强制加
-##########检查.gitignore哪里出了错
+#######检查.gitignore哪里出了错
 	$ git check-ignore
 
 ###配置别名
