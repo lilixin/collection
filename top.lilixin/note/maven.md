@@ -139,6 +139,18 @@
       <name>Human Readable Name for this Mirror.</name>  
       <url>http://repo2.maven.org/maven2/</url>
     </mirror>
+	<mirror>  
+            <id>maven.mirrorid</id>  
+            <mirrorOf>central</mirrorOf>  
+            <name>Human Readable Name for this Mirror.</name>  
+            <url>http://mirrors.ibiblio.org/pub/mirrors/maven2/</url>  
+        </mirror>  
+        <mirror>  
+            <id>mirrorId</id>  
+            <mirrorOf>*</mirrorOf>  
+            <name>Human Readable Name for this Mirror.</name>  
+            <url>http://maven.mirrorid/content/groups/public/</url>  
+        </mirror>  
     </mirrors>
 ************
 ************
