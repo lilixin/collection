@@ -59,3 +59,241 @@
     </project>
 
 ######对应依赖的包的dependency 可以在这个网站找[http://mvnrepository.com/](http://mvnrepository.com/)
+************
+************
+************
+###配置远程仓库
+####在POM中配置远程仓库
+这种方式只能在本项目中使用(不推荐)
+
+####在settings.xml中配置远程仓库(推荐)
+	<！--这里配置公司的nexus私服-->
+    <profile>
+    	  <id>nexus</id>
+      <repositories>
+    <repository>
+      <id>nexus</id>
+      <url>http://192.168.1.5:8081/nexus/content/repositories/public</url>
+    		  <snapshots> 
+    			<enabled>true</enabled> 
+    		  </snapshots> 
+    		  <releases> 
+    		 	<enabled>true</enabled> 
+    		  </releases>		  
+    </repository>
+      </repositories>
+      <pluginRepositories>
+      	<pluginRepository> 
+      		<id>nexus</id> 
+      		<url>http://192.168.1.5:8081/nexus/content/repositories/public</url>
+      		<snapshots>
+      			<enabled>false</enabled>
+      		</snapshots>
+    		</pluginRepository>
+      	<pluginRepository> 
+      		<id>central</id> 
+      		<url>http://repo1.maven.org/maven2</url>
+      		<snapshots>
+      			<enabled>false</enabled>
+      		</snapshots>
+    		</pluginRepository>		
+      </pluginRepositories>
+    </profile>
+    	<profile>
+    	   <id>sonar</id>
+    	   <activation>
+    		   <activeByDefault>true</activeByDefault>
+    	   </activation>
+    	   <properties>  
+    		   <sonar.jdbc.url>
+    			 jdbc:mysql://192.168.1.7:3306/sonar
+    		   </sonar.jdbc.url>
+    		   <sonar.jdbc.driver>com.mysql.jdbc.Driver</sonar.jdbc.driver>
+    		   <sonar.jdbc.username>user</sonar.jdbc.username>
+    		   <sonar.jdbc.password>user</sonar.jdbc.password>  
+    		   <sonar.host.url>http://192.168.1.7:9080/sonar/</sonar.host.url>
+    	   </properties>
+    	</profile>	
+    	
+    	<!-- 设置mavn创建项目时默认的jdk版本 -->
+    	<profile>  
+    		<id>jdk-1.8</id>  
+    		<activation>  
+    			<activeByDefault>true</activeByDefault>  
+    			<jdk>1.8</jdk>  
+    		</activation>  
+    		<properties>  
+    			<maven.compiler.source>1.8</maven.compiler.source>  
+    			<maven.compiler.target>1.8</maven.compiler.target>  
+    			<maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>  
+    		</properties>  
+    	</profile> 
+    
+      </profiles>
+ 
+######这里配置国内速度比较快的镜像        
+    <mirrors>
+    <mirror>  
+      <id>repo2</id>  
+      <mirrorOf>central</mirrorOf>  
+      <name>Human Readable Name for this Mirror.</name>  
+      <url>http://repo2.maven.org/maven2/</url>
+    </mirror>
+    </mirrors>
+************
+************
+************
+
+###指定Maven分发构件的位置(pom.xml)
+mvn deploy 用来将项目生成的构件分发到远程Maven仓库
+
+	<distributionManagement>
+		<repository>
+			<id>releases</id>
+			<name>Internal Releases</name>
+			<url>http://192.168.1.5:8081/nexus/content/repositories/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>Nexus Snapshot Repository</name>
+			<url>http://192.168.1.5:8081/nexus/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+######分发构件到远程仓库需要认证
+
+     <server>
+       <id>releases</id>
+       <username>deployment</username>
+       <password>deployment</password>
+     </server>
+    	 <server>
+       <id>snapshots</id>
+       <username>deployment</username>
+       <password>deployment</password>
+     </server>
+      </servers>
+
+###通用打包配置(pom.xml)
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+			</resource>
+		</resources>
+		<pluginManagement>
+			<plugins>
+				<!-- resource插件, 设定编码 -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>2.7</version>
+					<configuration>
+						<encoding>${project.build.sourceEncoding}</encoding>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>2.4</version>
+					<configuration>
+						<encoding>${project.build.sourceEncoding}</encoding>
+					</configuration>
+					<executions>
+						<execution>
+							<id>attach-sources</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.10.1</version>
+					<executions>
+						<execution>
+							<id>attach-javadocs</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<!-- compiler插件, 设定JDK版本及编码 -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.2</version>
+					<configuration>
+						<source>${jdk.version}</source>
+						<target>${jdk.version}</target>
+						<encoding>${project.build.sourceEncoding}</encoding>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>2.5</version>
+					<configuration>
+						<archive>
+							<addMavenDescriptor>false</addMavenDescriptor>
+						</archive>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>2.5</version>
+					<configuration>
+						<resourceEncoding>${project.build.sourceEncoding}</resourceEncoding>
+						<archive>
+							<addMavenDescriptor>false</addMavenDescriptor>
+						</archive>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.12.4</version>
+					<configuration>
+						<skip>true</skip>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-checkstyle-plugin</artifactId>
+					<version>2.13</version>
+					<configuration>
+						<configLocation>config/maven_checks.xml</configLocation>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jxr-plugin</artifactId>
+					<version>2.5</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-source-plugin</artifactId>
+			    <executions>
+			        <execution>
+			            <id>attach-sources</id>
+			            <goals>
+			                <goal>jar-no-fork</goal>
+			            </goals>
+			        </execution>
+			    </executions>
+			</plugin>
+		</plugins>
+	</build>
+
+
+
